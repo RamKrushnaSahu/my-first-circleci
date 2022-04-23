@@ -1,9 +1,22 @@
 version: 2.1
 
 jobs:
-    build:
+    one:
         docker:
             - image: circleci/node:4.8.2
         steps:
             - checkout
-            - run: echo "Welcome to CircleCi Ram"
+            - run: echo "Welcome to First Job"
+    two:
+        docker:
+            - image: circleci/node:4.8.2
+        steps:
+            - checkout
+            - run: echo "Welcome to Second Job"
+
+workflows:
+    version: 2.1
+    one_and_two:
+        jobs:
+            -one
+            -two

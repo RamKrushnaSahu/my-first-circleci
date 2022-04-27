@@ -53,6 +53,11 @@ workflows:
       - Fetch-Code:
           requires:
             - First-Job
+      - Approval-Stage
+          type: approval
+          requires:
+            - First-Job
+            - Fetch-Code
       - Second-Job:
           requires:
-            - Fetch-Code
+            - Approval-Stage

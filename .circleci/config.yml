@@ -9,8 +9,14 @@ jobs:
       - run:
           name: First-Job First Step
           command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
+            echo 'Welcome !!'
+            echo '\nThis is the present working directory :'
+            pwd
+            ls
+            touch ram.txt
+            ls
+            echo '\nThese are the files before fetching from GIT :'
+            ls -al
       - run:
           name: First-Job Second Step
           command: |
@@ -22,11 +28,13 @@ jobs:
     docker:
       - image: cimg/base:2021.04
     steps:
+      - checkout
       - run:
-          name: Getting the Code
+          name: Fetching the Code from GITHUB
           command: |
+            echo 'These are the files after fetching from GIT :'
             ls -al
-            echo '^^^Your repo files^^^'
+            echo '^^^Your GIT repo files^^^'
   
   # running a node container
   Second-Job:

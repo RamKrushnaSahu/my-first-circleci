@@ -1,63 +1,31 @@
 version: 2.1
 
+orbs:
+  terraform: circleci/terraform@3.0.1
+
 jobs:
 
   First-Job:
     docker:
-      - image: cimg/base:2021.04
+      - image: hashicorp/terraform:0.12.1
     steps:
       - run:
-          name: First-Job First Step
+          name: First-Step : Terraform version check
           command: |
-            echo 'Welcome !!'
-            echo '\nThis is the present working directory :'
-            pwd
-            ls
-            touch ram.txt
-            ls
-            echo '\nThese are the files before fetching from GIT :'
-            ls -al
-      - run:
-          name: First-Job Second Step
-          command: |
-            ls -al
-            echo '^^^The files in your repo^^^'
-  
-  # fetching code from the repo
-  Fetch-Code:
-    docker:
-      - image: cimg/base:2021.04
-    steps:
-      - checkout
-      - run:
-          name: Fetching the Code from GITHUB
-          command: |
-            echo 'These are the files after fetching from GIT :'
+            echo 'Welcome to CircleCi!!'
+            terraform --version
+	  - checkout
+	  - run:
+          name: Second-Step : Fetching the Code from GITHUB
+		  command: |
+            echo 'These are the files downloaded from GITHUB :'
             ls -al
             echo '^^^Your GIT repo files^^^'
-  
-  # running a node container
-  Second-Job:
-    docker:
-      - image: cimg/node:17.2
-    steps:
-      - run:
-          name: Running the Node Container
+	  - run:
+          name: Third-Step : EC2 Creation
           command: |
-            node -v
-
-workflows:
-  Example-Workflow:
-    jobs:
-      - First-Job
-      - Fetch-Code:
-          requires:
-            - First-Job
-      - Approval-Stage:
-          type: approval
-          requires:
-            - First-Job
-            - Fetch-Code
-      - Second-Job:
-          requires:
-            - Approval-Stage
+			cd terraform-ec2 
+            terraform init
+			terraform plan
+			terraform apply -auto-approve
+			echo 'EC2 is Created in AWS'

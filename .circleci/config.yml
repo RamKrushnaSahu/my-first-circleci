@@ -4,7 +4,7 @@ orbs:
   terraform: circleci/terraform@3.0.1
 
 jobs:
-  First-Job:
+  build:
     docker:
       - image: hashicorp/terraform:0.12.1
     steps:

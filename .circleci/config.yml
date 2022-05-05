@@ -44,6 +44,7 @@ jobs:
       - run:
           name: Second Job Step2 EC2 Creation
           command: |
+            terraform init
             terraform apply -auto-approve
             echo 'EC2 Instance is Created in AWS'
 

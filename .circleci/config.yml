@@ -10,22 +10,22 @@ jobs:
       - image: hashicorp/terraform:0.12.1
     steps:
       - run:
-          name: First-Step Terraform version check
+          name: First Step Terraform version check
           command: |
             echo 'Welcome to CircleCi!!'
             terraform --version
       - checkout
       - run:
-          name: Second-Step Fetching the Code from GITHUB
-	  command: |
+          name: Second Step Fetching the Code from GITHUB
+          command: |
             echo 'These are the files downloaded from GITHUB :'
             ls -al
             echo '^^^Your GIT repo files^^^'
-       - run:
-          name: Third-Step EC2 Creation
+      - run:
+          name: Third Step EC2 Creation
           command: |
             cd terraform-ec2 
-	    terraform init
-	    terraform plan
-	    terraform apply -auto-approve
-	    echo 'EC2 is Created in AWS'
+            terraform init
+            terraform plan
+            terraform apply -auto-approve
+            echo 'EC2 is Created in AWS'

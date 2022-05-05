@@ -1,30 +1,60 @@
+## Terraform EC2 creation through Two Jobs with Workflows and Approval stage
+
+
 version: 2.1
 
 orbs:
   terraform: circleci/terraform@3.0.1
 
 jobs:
-  build:
+  AWS-Infra-Plan:
     docker:
       - image: hashicorp/terraform:0.12.1
     steps:
       - run:
-          name: First Step Terraform version check
+          name: First Job Step1 Terraform version check
           command: |
             echo 'Welcome to CircleCi!!'
             terraform --version
       - checkout
       - run:
-          name: Second Step Fetching the Code from GITHUB
+          name: First Job Step2 Fetching the Code from GITHUB
           command: |
             echo 'These are the files downloaded from GITHUB :'
             ls -al
             echo '^^^Your GIT repo files^^^'
       - run:
-          name: Third Step EC2 Creation
+          name: First Job Step3 Terraform Plan check
           command: |
             cd terraform-ec2 
             terraform init
             terraform plan
+
+  AWS-Infra-Build:
+    docker:
+      - image: hashicorp/terraform:0.12.1
+    steps:
+      - checkout
+      - run:
+          name: Second Job Step1 Fetching the Code from GITHUB
+          command: |
+            echo 'These are the files downloaded from GITHUB :'
+            ls -al
+            echo '^^^Your GIT repo files^^^'
+      - run:
+          name: Second Job Step2 EC2 Creation
+          command: |
             terraform apply -auto-approve
-            echo 'EC2 is Created in AWS'
+            echo 'EC2 Instance is Created in AWS'
+
+workflows:
+  Test-Workflow:
+    jobs:
+      - AWS-Infra-Plan
+      - Approval-Stage:
+          type: approval
+          requires:
+            - AWS-Infra-Plan
+      - AWS-Infra-Build:
+          requires:
+            - Approval-Stage

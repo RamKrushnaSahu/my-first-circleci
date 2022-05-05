@@ -14,18 +14,18 @@ jobs:
           command: |
             echo 'Welcome to CircleCi!!'
             terraform --version
-	  - checkout
-	  - run:
+      - checkout
+      - run:
           name: Second-Step Fetching the Code from GITHUB
-		  command: |
+	  command: |
             echo 'These are the files downloaded from GITHUB :'
             ls -al
             echo '^^^Your GIT repo files^^^'
-	  - run:
+       - run:
           name: Third-Step EC2 Creation
           command: |
-			cd terraform-ec2 
-            terraform init
-			terraform plan
-			terraform apply -auto-approve
-			echo 'EC2 is Created in AWS'
+            cd terraform-ec2 
+	    terraform init
+	    terraform plan
+	    terraform apply -auto-approve
+	    echo 'EC2 is Created in AWS'
